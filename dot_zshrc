@@ -1,5 +1,4 @@
 
-. "$HOME/.local/bin/env"
 export PATH="$PATH:$HOME/go/bin"
 
 
