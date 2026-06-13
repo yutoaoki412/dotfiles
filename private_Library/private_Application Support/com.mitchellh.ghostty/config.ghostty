@@ -1,0 +1,94 @@
+# ╔══════════════════════════════════════════════════════════════╗
+# ║                    Ghostty 設定ファイル                        ║
+# ║  場所: ~/Library/Application Support/com.mitchellh.ghostty/.  ║
+# ║  リロード: Ctrl+Shift+R（再起動不要）                            ║
+# ╚══════════════════════════════════════════════════════════════╝
+
+
+font-family = "JetBrainsMono Nerd Font"
+
+# ──────────────────────────────────────────
+# 外観（背景・透明度）
+# ──────────────────────────────────────────
+
+# 背景の透明度（0.0=完全透明 〜 1.0=不透明）
+background-opacity = 0.70
+
+# 背景のぼかし強度（すりガラス効果）。background-opacity < 1.0 のときに有効
+# 数値が大きいほど強くぼける（0=なし、最大100程度）
+background-blur = 30
+
+# セルの高さを10%増やして行間を広げる（モダンな見た目に）
+adjust-cell-height = 10%
+
+
+# ──────────────────────────────────────────
+# macOS 固有の設定
+# ──────────────────────────────────────────
+
+# タイトルバーのスタイル
+#   native      = macOS 標準
+#   transparent = タイトルバーが透明になりウィンドウと一体化（現在の設定）
+#   tabs        = タブバー一体型
+#   hidden      = タイトルバーを非表示
+macos-titlebar-style = transparent
+
+# ウィンドウにドロップシャドウを付ける
+macos-window-shadow = true
+
+# 文字を入力している間はマウスカーソルを自動で非表示にする
+mouse-hide-while-typing = true
+
+
+# ──────────────────────────────────────────
+# ウィンドウ・起動設定
+# ──────────────────────────────────────────
+working-directory = ~/Documents/GitHub
+
+# 新しいウィンドウ・タブ・スプリットを開いたとき、現在のディレクトリを引き継ぐ
+window-inherit-working-directory = true
+tab-inherit-working-directory = true
+split-inherit-working-directory = true
+
+
+# ──────────────────────────────────────────
+# コマンド完了通知（ビルド・長時間処理の完了を通知）
+# ──────────────────────────────────────────
+# unfocused = そのタブ/ウィンドウが非アクティブのときだけ通知
+notify-on-command-finish = unfocused
+# 5秒以上かかったコマンドのみ通知（短いコマンドはスキップ）
+notify-on-command-finish-after = 5s
+# 通知方法: bell（音）＋ notify（macOS 通知バナー）
+notify-on-command-finish-action = bell,notify
+
+
+# ──────────────────────────────────────────
+# クイックターミナル（Hotkey Window）
+# ──────────────────────────────────────────
+# ショートカット（下の keybind 参照）で画面に呼び出せる
+# 一時的な作業やコマンド実行に便利
+
+# 表示位置（top / bottom / left / right / center）
+quick-terminal-position = top
+
+# 表示サイズ（画面に対する割合）
+quick-terminal-size = 40%
+
+# フォーカスが外れたら自動で隠す
+quick-terminal-autohide = true
+
+# 表示/非表示のアニメーション時間（秒）
+quick-terminal-animation-duration = 0.2
+
+
+# ──────────────────────────────────────────
+# キーバインド
+# ──────────────────────────────────────────
+
+# 設定ファイルをリロード（Ghostty を再起動せずに設定を反映）
+keybind = ctrl+shift+r=reload_config
+
+# クイックターミナルの表示/非表示トグル
+#   global: を付けると Ghostty が背面にあっても反応するグローバルショートカット
+#   ctrl+m = Ctrl+M
+keybind = global:ctrl+m=toggle_quick_terminal

@@ -1,0 +1,9 @@
+
+. "$HOME/.local/bin/env"
+export PATH="$PATH:$HOME/go/bin"
+
+
+# Added by Antigravity CLI installer
+export PATH="$HOME/.local/bin:$PATH"
+
+eval "$(starship init zsh)"
