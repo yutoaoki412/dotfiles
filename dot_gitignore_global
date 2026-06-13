@@ -1,0 +1,14 @@
+# direnv: 各プロジェクトのローカル環境変数ファイル（個人ワークフロー用）
+.envrc
+.envrc.local
+
+# direnv のキャッシュ・生成物
+.direnv/
+
+# macOS
+.DS_Store
+
+# エディタ
+*.swp
+*.swo
+*~

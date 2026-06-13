@@ -5,6 +5,8 @@ brew "awscli"
 brew "chezmoi"
 # Tool for exploring each layer in a docker image
 brew "dive"
+# Per-directory environment variable manager
+brew "direnv"
 # GitHub command-line tool
 brew "gh"
 # Open source programming language to build simple/reliable/efficient software

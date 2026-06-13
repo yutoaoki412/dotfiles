@@ -11,7 +11,12 @@ truncation_length = 3
 truncate_to_repo = true
 
 [gcloud]
-disabled = true
+disabled = false
+detect_env_vars = ["CLOUDSDK_ACTIVE_CONFIG_NAME"]
+# 公式: https://starship.rs/config/#gcloud
+format = '[$symbol$account(@$domain) · \($project\)]($style) '
+style = "bold blue"
+symbol = "☁️  "
 
 [aws]
 disabled = true

@@ -1,8 +1,10 @@
 
 export PATH="$PATH:$HOME/go/bin"
 
-
 # Added by Antigravity CLI installer
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(starship init zsh)"
+
+# direnv: per-directory environment variables (used by gcp-account-manager)
+eval "$(direnv hook zsh)"
