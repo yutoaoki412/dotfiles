@@ -133,6 +133,21 @@
     "JSON": {
       "format_on_save": "on",
       "tab_size": 2
+    },
+    "YAML": {
+      "format_on_save": "on",
+      "tab_size": 2
+    },
+    "Terraform": {
+      "language_servers": ["terraform-ls"],
+      "format_on_save": "on",
+      "tab_size": 2
+    },
+    "Jinja2": {
+      "tab_size": 2
+    },
+    "Django HTML": {
+      "tab_size": 2
     }
   }
 }
