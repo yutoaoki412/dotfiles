@@ -13,7 +13,7 @@
     "light": "One Light",
     "dark": "Tokyo Night Storm"
   },
-  "icon_theme": "Zed (Default)",
+  "icon_theme": "VSCode Great Icons Theme",
 
   // --- フォント ---
   "ui_font_size": 16,
