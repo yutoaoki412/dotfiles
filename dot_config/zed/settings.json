@@ -1,153 +1,228 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
 {
-  // --- テーマ ---
-  "theme": {
-    "mode": "dark",
-    "light": "One Light",
-    "dark": "Tokyo Night Storm"
+  // ─────────────────────────────
+  // AI
+  // ─────────────────────────────
+
+  "collaboration_panel": {
+    "button": false
   },
+  "disable_ai": true,
+
+  "edit_predictions": {
+    "provider": "zed",
+    "allow_data_collection": "yes"
+  },
+
+  // ─────────────────────────────
+  // テーマ
+  // ─────────────────────────────
+
+  // エディタ・ファイル・各種パネルは GitHub Dark Dimmed
+  "theme": "GitHub Dark Dimmed",
+
   "icon_theme": "VSCode Great Icons Theme",
 
-  // --- フォント ---
-  "ui_font_size": 16,
-  "buffer_font_family": "Zed Mono",
+  // ターミナル部分だけ One Dark の配色に上書き
+  "theme_overrides": {
+    "GitHub Dark Dimmed": {
+      // ターミナルだけ One Dark
+      "terminal.background": "#282c34ff",
+      "terminal.foreground": "#abb2bfff",
+      "terminal.bright_foreground": "#dce0e5ff",
+      "terminal.dim_foreground": "#636d83ff",
+
+      "terminal.ansi.black": "#282c34ff",
+      "terminal.ansi.bright_black": "#636d83ff",
+      "terminal.ansi.dim_black": "#3b3f4aff",
+
+      "terminal.ansi.red": "#e06c75ff",
+      "terminal.ansi.bright_red": "#ea858bff",
+      "terminal.ansi.dim_red": "#a7545aff",
+
+      "terminal.ansi.green": "#98c379ff",
+      "terminal.ansi.bright_green": "#aad581ff",
+      "terminal.ansi.dim_green": "#6d8f59ff",
+
+      "terminal.ansi.yellow": "#e5c07bff",
+      "terminal.ansi.bright_yellow": "#ffd885ff",
+      "terminal.ansi.dim_yellow": "#b8985bff",
+
+      "terminal.ansi.blue": "#61afefff",
+      "terminal.ansi.bright_blue": "#85c1ffff",
+      "terminal.ansi.dim_blue": "#457cadff",
+
+      "terminal.ansi.magenta": "#c678ddff",
+      "terminal.ansi.bright_magenta": "#d398ebff",
+      "terminal.ansi.dim_magenta": "#8d54a0ff",
+
+      "terminal.ansi.cyan": "#56b6c2ff",
+      "terminal.ansi.bright_cyan": "#6ed5deff",
+      "terminal.ansi.dim_cyan": "#3c818aff",
+
+      "terminal.ansi.white": "#abb2bfff",
+      "terminal.ansi.bright_white": "#fafafaff",
+      "terminal.ansi.dim_white": "#8f969bff",
+
+      // カーソルを白にする
+      "players": [
+        {
+          "cursor": "#ffffffff",
+          "background": "#74ade8ff",
+          "selection": "#74ade83d"
+        }
+      ]
+    }
+  },
+
+  // ─────────────────────────────
+  // フォント
+  // ─────────────────────────────
+
+  // macOS標準UIフォント
+  "ui_font_family": ".SystemUIFont",
+  "ui_font_size": 15,
+
+  // Ghosttyと統一
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_size": 15,
 
-  // --- エディタ基本 ---
-  "base_keymap": "VSCode",
-  "tab_size": 4,
-  "soft_wrap": "editor_width",
-  "show_whitespaces": "selection",
-  "autosave": "on_focus_change",
-  "format_on_save": "on",
+  "buffer_line_height": {
+    "custom": 1.4
+  },
+
+  // ─────────────────────────────
+  // エディタ
+  // ─────────────────────────────
+
+  "current_line_highlight": "line",
+
+  "cursor_blink": false,
+
+  "minimap": {
+    "show": "never"
+  },
+
+  "scrollbar": {
+    "show": "auto",
+    "git_diff": true,
+    "search_results": true,
+    "selected_text": true,
+    "selected_symbol": true,
+    "diagnostics": "warning"
+  },
+
   "indent_guides": {
-    "enabled": true
+    "enabled": true,
+    "coloring": "fixed",
+    "background_coloring": "disabled"
   },
 
-  // --- パネル配置 ---
-  "project_panel": {
-    "dock": "left",
+  // ─────────────────────────────
+  // ペイン
+  // ─────────────────────────────
+
+  "active_pane_modifiers": {
+    "border_size": 1.0,
+    "inactive_opacity": 1.0
+  },
+
+  // ─────────────────────────────
+  // タイトルバー
+  // ─────────────────────────────
+
+  "title_bar": {
+  //   "show_branch_name": true,
+  //   "show_project_items": true,
+
+  //   "show_branch_status_icon": false,
+    "show_onboarding_banner": false,
+  //   "show_user_picture": false,
+  //   "show_user_menu": false,
+    // "show_sign_in": false,
+  //   "show_menus": false
+  },
+
+  // ─────────────────────────────
+  // タブ
+  // ─────────────────────────────
+
+  "tab_bar": {
+    "show": true,
+
+    // 戻る・進むボタンは非表示
+    "show_nav_history_buttons": false,
+
+    // ＋、分割、ズームなどは表示
+    "show_tab_bar_buttons": true
+  },
+
+  "tabs": {
     "file_icons": true,
-    "git_status": true
-  },
-  "outline_panel": {
-    "dock": "left"
-  },
-  "collaboration_panel": {
-    "dock": "left"
-  },
-  "git_panel": {
-    "dock": "left"
+    "git_status": true,
+
+    // エラーだけタブに表示
+    "show_diagnostics": "errors",
+
+    "show_close_button": "hover",
+    "close_position": "right",
+    "activate_on_close": "history"
   },
 
-  // --- Git ---
-  "git": {
-    "inline_blame": {
-      "enabled": true
-    }
-  },
+  // ─────────────────────────────
+  // プロジェクトパネル
+  // ─────────────────────────────
 
-  // --- AI / Agent ---
-  "edit_predictions": {
-    "provider": "copilot"
-  },
-  "agent": {
+  "project_panel": {
     "dock": "right",
-    "sidebar_side": "right",
-    "favorite_models": [],
-    "model_parameters": []
-  },
-  "agent_servers": {
-    "cursor": {
-      "default_config_options": {
-        "model": "composer-2.5[fast=true]"
-      },
-      "type": "registry"
+
+    "default_width": 250,
+    "entry_spacing": "standard",
+
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+
+    "bold_folder_labels": true,
+    "indent_size": 20,
+
+    "indent_guides": {
+      "show": "always"
     },
-    "claude-acp": {
-      "default_config_options": {
-        "model": "default",
-        "mode": "bypassPermissions",
-        "effort": "high"
-      },
-      "favorite_config_option_values": {
-        "mode": [
-          "bypassPermissions"
-        ],
-        "effort": [
-          "high"
-        ]
-      },
-      "type": "registry"
+
+    "sticky_scroll": true,
+    "auto_reveal_entries": true,
+
+    // src/components のような階層を勝手に圧縮しない
+    "auto_fold_dirs": false,
+
+    "sort_mode": "directories_first"
+  },
+
+  // ─────────────────────────────
+  // ターミナル
+  // ─────────────────────────────
+
+  "terminal": {
+    "dock": "bottom",
+    "default_height": 380,
+
+    "font_family": "JetBrainsMono Nerd Font",
+    "font_size": 15,
+
+    // CodexなどのTUIで罫線が崩れにくい
+    "line_height": "standard",
+
+    // One Dark本来の色をそのまま使う
+    "minimum_contrast": 0,
+
+    "blinking": "off",
+    "cursor_shape": "block",
+
+    "scrollbar": {
+      "show": "never"
     }
   },
 
-  // --- セッション ---
-  "session": {
-    "trust_all_worktrees": true
-  },
-
-  // --- パフォーマンス（重いディレクトリを除外） ---
-  "file_scan_exclusions": [
-    "**/.git",
-    "**/node_modules",
-    "**/.venv",
-    "**/__pycache__",
-    "**/.mypy_cache",
-    "**/.ruff_cache"
-  ],
-
-  // --- 言語別設定 ---
-  "languages": {
-    "Python": {
-      "language_servers": ["basedpyright", "ruff"],
-      "format_on_save": "on",
-      "formatter": {
-        "language_server": { "name": "ruff" }
-      },
-      "tab_size": 4
-    },
-    "HTML": {
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "CSS": {
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "JavaScript": {
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "TypeScript": {
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "JSON": {
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "YAML": {
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "Terraform": {
-      "language_servers": ["terraform-ls"],
-      "format_on_save": "on",
-      "tab_size": 2
-    },
-    "Jinja2": {
-      "tab_size": 2
-    },
-    "Django HTML": {
-      "tab_size": 2
-    }
-  }
+  // ターミナルを横幅いっぱいに表示
+  "bottom_dock_layout": "full"
 }

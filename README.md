@@ -16,6 +16,7 @@ macOS の開発環境設定を [chezmoi](https://www.chezmoi.io) で管理する
 | `~/.gitconfig` | `dot_gitconfig.tmpl` | Git ユーザー情報・global gitignore 設定 |
 | `~/.gitignore_global` | `dot_gitignore_global` | 全リポジトリ共通で無視するファイル（`.envrc`, `.direnv/` 等） |
 | `~/.config/starship.toml` | `dot_config/starship.toml` | プロンプト表示設定（gcloud アカウント表示含む） |
+| `~/.config/zed/settings.json` | `dot_config/zed/settings.json` | Zed エディタの共通設定 |
 | `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty` | `private_Library/.../config.ghostty` | Ghostty ターミナル設定 |
 | （リポジトリ直下） | `Brewfile` | Homebrew パッケージ・Cask・拡張機能一覧 |
 
@@ -94,6 +95,7 @@ chezmoi re-add
 # 特定ファイルだけ取り込む
 chezmoi re-add ~/.zshrc
 chezmoi re-add ~/.config/starship.toml
+chezmoi re-add ~/.config/zed/settings.json
 ```
 
 変更を確認してからコミット・プッシュします。
@@ -179,7 +181,9 @@ dotfiles/
 ├── Brewfile                                # Homebrew パッケージ・Cask・拡張機能・ツール一覧
 ├── run_onchange_install-packages.sh.tmpl   # Brewfile 変更時に自動実行される brew bundle install
 ├── dot_config/
-│   └── starship.toml                       # → ~/.config/starship.toml
+│   ├── starship.toml                       # → ~/.config/starship.toml
+│   └── zed/
+│       └── settings.json                   # → ~/.config/zed/settings.json
 ├── dot_gitconfig.tmpl                      # → ~/.gitconfig（メールアドレスはマシンごとに異なる）
 ├── dot_gitignore_global                    # → ~/.gitignore_global（.envrc 等を全リポジトリで無視）
 ├── dot_zprofile                            # → ~/.zprofile
