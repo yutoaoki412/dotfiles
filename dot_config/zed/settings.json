@@ -6,11 +6,19 @@
   "collaboration_panel": {
     "button": false
   },
-  "disable_ai": true,
 
+  // 社内承認済みの GitHub Copilot のみ
+  // - Edit Prediction（補完）+ External Agents（Agent パネルの Copilot CLI）
+  // - Zed Agent / Cursor ACP は使わない
+  // - Claude Code / Codex / Cursor はターミナルから利用
+  "disable_ai": false,
   "edit_predictions": {
-    "provider": "zed",
-    "allow_data_collection": "yes"
+    "provider": "copilot"
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry"
+    }
   },
 
   // ─────────────────────────────
