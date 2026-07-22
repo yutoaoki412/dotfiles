@@ -33,11 +33,11 @@
   // ターミナル部分だけ One Dark の配色に上書き
   "theme_overrides": {
     "GitHub Dark Dimmed": {
-      // ターミナルだけ One Dark
+      // ターミナルだけ One Dark（本文は Ghostty 寄りに明るく）
       "terminal.background": "#282c34ff",
-      "terminal.foreground": "#abb2bfff",
-      "terminal.bright_foreground": "#dce0e5ff",
-      "terminal.dim_foreground": "#636d83ff",
+      "terminal.foreground": "#e6e8ecff",
+      "terminal.bright_foreground": "#f5f6f8ff",
+      "terminal.dim_foreground": "#6b7380ff",
 
       "terminal.ansi.black": "#282c34ff",
       "terminal.ansi.bright_black": "#636d83ff",
@@ -67,9 +67,9 @@
       "terminal.ansi.bright_cyan": "#6ed5deff",
       "terminal.ansi.dim_cyan": "#3c818aff",
 
-      "terminal.ansi.white": "#abb2bfff",
-      "terminal.ansi.bright_white": "#fafafaff",
-      "terminal.ansi.dim_white": "#8f969bff",
+      "terminal.ansi.white": "#e6e8ecff",
+      "terminal.ansi.bright_white": "#ffffffff",
+      "terminal.ansi.dim_white": "#7a828cff",
 
       // カーソルを白にする
       "players": [
