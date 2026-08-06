@@ -18,7 +18,7 @@ macOS の開発環境設定を [chezmoi](https://www.chezmoi.io) で管理する
 | `~/.config/starship.toml` | `dot_config/starship.toml` | プロンプト表示設定（gcloud アカウント表示含む） |
 | `~/.config/zed/settings.json` | `dot_config/zed/settings.json` | Zed エディタの共通設定 |
 | `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty` | `private_Library/.../config.ghostty` | Ghostty ターミナル設定 |
-| （リポジトリ直下） | `Brewfile` | Homebrew パッケージ・Cask・拡張機能一覧 |
+| （リポジトリ直下） | `Brewfile` | Homebrew パッケージ・Cask・拡張機能一覧（source-only） |
 
 ### Brewfile に含まれる主なツール
 
@@ -134,7 +134,7 @@ chezmoi update
 
 ```bash
 # 現在インストール済みのパッケージから Brewfile を再生成
-brew bundle dump --force --file=~/.local/share/chezmoi/Brewfile
+brew bundle dump --force --file="$(chezmoi source-path)/Brewfile"
 
 chezmoi cd
 git add Brewfile
@@ -143,7 +143,11 @@ git push
 exit
 ```
 
-> `Brewfile` が変更されると、次回 `chezmoi apply` / `chezmoi update` 時に `brew bundle install` が自動実行されます。
+パッケージのインストール・更新は、dotfiles反映とは分離して明示的に実行します。
+
+```bash
+brew bundle install --file="$(chezmoi source-path)/Brewfile"
+```
 
 ---
 
@@ -193,8 +197,8 @@ chezmoi はファイル名のプレフィックス・サフィックスで管理
 ```
 dotfiles/
 ├── .chezmoi.toml.tmpl                     # 初回セットアップ時に Git メールアドレスを入力させるテンプレート
+├── .chezmoiignore                          # ホームへ反映しないsource-onlyファイル
 ├── Brewfile                                # Homebrew パッケージ・Cask・拡張機能・ツール一覧
-├── run_onchange_install-packages.sh.tmpl   # Brewfile 変更時に自動実行される brew bundle install
 ├── dot_config/
 │   ├── starship.toml                       # → ~/.config/starship.toml
 │   └── zed/
@@ -203,6 +207,7 @@ dotfiles/
 ├── dot_gitignore_global                    # → ~/.gitignore_global（.envrc 等を全リポジトリで無視）
 ├── dot_zprofile                            # → ~/.zprofile
 ├── dot_zshrc                               # → ~/.zshrc（direnv フック含む）
+├── dot_local/bin/executable_with-direnv    # → ~/.local/bin/with-direnv
 └── private_Library/
     └── private_Application Support/
         └── com.mitchellh.ghostty/
