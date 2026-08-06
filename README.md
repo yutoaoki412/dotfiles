@@ -36,6 +36,21 @@ macOS の開発環境設定を [chezmoi](https://www.chezmoi.io) で管理する
 
 各プロジェクトの `.envrc` は [gcp-account-manager](https://github.com/yutoaoki412/gcp-account-manager) が管理する個人のワークフロー設定です。チームリポジトリを含む全リポジトリで Git の追跡対象外にすることで、誤ってコミットすることを防いでいます。
 
+### direnv を使う非対話コマンド
+
+対話シェルでは `direnv hook zsh` がディレクトリ移動時に `.envrc` を読み込みます。一方、CI、エディタ、Codexなどの非対話コマンドはシェルのhookを通らない場合があります。
+
+chezmoiが配布する `~/.local/bin/with-direnv` を使うと、現在のGit workspaceのルートで `direnv exec` を実行してからコマンドを起動できます。
+
+```bash
+# workspace の .envrc を読み込んだうえで認証状態を確認する
+with-direnv gh auth status
+with-direnv gcloud auth list
+with-direnv aws sts get-caller-identity
+```
+
+`.envrc` には設定先（例: `GH_CONFIG_DIR`）だけを置き、token・key・credential JSONは `.state/` やOS keyringに置く。keyringを読めないsandbox環境では、設定が正しくても追加の実行許可が必要になる。この隔離境界を回避するためにcredentialを環境変数やGitへ複製してはいけない。
+
 ---
 
 ## セットアップ（新しい Mac で初めて使う）
