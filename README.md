@@ -14,11 +14,24 @@ macOS の開発環境設定を [chezmoi](https://www.chezmoi.io) で管理する
 | `~/.zshrc` | `dot_zshrc` | PATH 設定・starship 起動・direnv フック |
 | `~/.zprofile` | `dot_zprofile` | ログインシェル設定（Homebrew の PATH）|
 | `~/.gitconfig` | `dot_gitconfig.tmpl` | Git ユーザー情報・global gitignore 設定 |
+| `~/.ssh/config` | `private_dot_ssh/private_config.tmpl` | github.com の SSH 鍵選択・macOS Keychain 連携 |
+| `~/.codex/AGENTS.md` | `private_dot_codex/AGENTS.md` | Codex 共通ルール・GitHub SSH 実行方針 |
 | `~/.gitignore_global` | `dot_gitignore_global` | 全リポジトリ共通で無視するファイル（`.envrc`, `.direnv/` 等） |
 | `~/.config/starship.toml` | `dot_config/starship.toml` | プロンプト表示設定（gcloud アカウント表示含む） |
 | `~/.config/zed/settings.json` | `dot_config/zed/settings.json` | Zed エディタの共通設定 |
 | `~/Library/Application Support/com.mitchellh.ghostty/config.ghostty` | `private_Library/.../config.ghostty` | Ghostty ターミナル設定 |
 | （リポジトリ直下） | `Brewfile` | Homebrew パッケージ・Cask・拡張機能一覧（source-only） |
+
+## GitHub 接続・認証方針
+
+- GitHub の Git remote は SSH URL を使用する。`gh` の API 操作は SSH では代替できないため、macOS の資格情報ストアに保存した OAuth を使う。
+- 対話 Mac の初回設定は `gh auth login --web --git-protocol ssh --scopes project`。日次の再ログインはせず、scope 追加時だけ `gh auth refresh --scopes project` を使う。
+- GitHub 専用 HTTPS credential helper と `gh auth setup-git` は使用しない。汎用の `osxkeychain` は非 GitHub HTTPS remote 用として維持する。
+- `admin:public_key` は鍵の登録・削除時だけ追加し、完了後に `gh auth refresh --remove-scopes admin:public_key` で外す。
+- SSH 鍵は端末ごとに固有のパスフレーズ付き Ed25519 鍵を使用し、秘密鍵はこの dotfiles に保存しない。新鍵を検証後に旧鍵を削除する。
+- Codex の通常 sandbox は GitHub SSH agent とネットワークを利用できない。GitHub の Git / `gh` 操作は実行承認を求め、SSH/`gh` の失敗を HTTPS fallback や再認証の根拠にしない。
+
+確認: `git remote -v`、`gh auth status --hostname github.com`、`gh api user`。
 
 ### Brewfile に含まれる主なツール
 
