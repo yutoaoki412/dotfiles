@@ -68,8 +68,3 @@ notify-on-command-finish-action = bell,notify
 
 # 設定ファイルをリロード（Ghostty を再起動せずに設定を反映）
 keybind = ctrl+shift+r=reload_config
-
-# クイックターミナルの表示/非表示トグル
-#   global: を付けると Ghostty が背面にあっても反応するグローバルショートカット
-#   ctrl+m = Ctrl+M
-keybind = global:ctrl+m=toggle_quick_terminal
