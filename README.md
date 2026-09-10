@@ -29,7 +29,7 @@ macOS の開発環境設定を [chezmoi](https://www.chezmoi.io) で管理する
 - GitHub 専用 HTTPS credential helper と `gh auth setup-git` は使用しない。汎用の `osxkeychain` は非 GitHub HTTPS remote 用として維持する。
 - `admin:public_key` は鍵の登録・削除時だけ追加し、完了後に `gh auth refresh --remove-scopes admin:public_key` で外す。
 - SSH 鍵は端末ごとに固有のパスフレーズ付き Ed25519 鍵を使用し、秘密鍵はこの dotfiles に保存しない。新鍵を検証後に旧鍵を削除する。
-- Codex の通常 sandbox は GitHub SSH agent とネットワークを利用できない。GitHub の Git / `gh` 操作は実行承認を求め、SSH/`gh` の失敗を HTTPS fallback や再認証の根拠にしない。
+- Codex の通常 sandbox は GitHub SSH agent とネットワークを利用できない。GitHub の Git / `gh` 操作では `sandbox_permissions: "require_escalated"` を明示して host 実行を承認してもらう。これが使えない実行環境では停止し、HTTPS fallback・`ssh-add`・再認証を案内しない。
 
 確認: `git remote -v`、`gh auth status --hostname github.com`、`gh api user`。
 

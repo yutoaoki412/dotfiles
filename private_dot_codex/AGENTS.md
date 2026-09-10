@@ -18,9 +18,9 @@
 - GitHub の Issue、Pull Request、Project、コメント操作は `gh` CLI token を標準経路にする。書き込み前に `gh auth status --hostname github.com` で認証を確認し、不足する scope を更新する。
 - 真に read-only な探索・検索は広く許可できるが、書き込み・送信・作成・削除など影響のある操作は個別に管理する。
 - GitHub リポジトリの Git 通信は SSH (`git@github.com:OWNER/REPO.git`) に統一する。API 操作だけを `gh` で行い、`gh auth setup-git`、`https://github.com/...` を指定した `git fetch` / `pull` / `push`、remote URL の HTTPS 化は行わない。
-- GitHub に対する `git fetch` / `pull` / `push` / `ls-remote` と `ssh -T git@github.com` は、最初から sandbox 外の実行承認を求める。通常の sandbox はネットワークと SSH agent を遮断するため、sandbox 内で試行してから別経路へ fallback してはならない。
-- `Permission denied (publickey)` が出た場合は HTTPS やトークン認証へ切り替えず、sandbox 外で SSH を再実行する承認を求める。それでも失敗した場合だけ、SSH config・Keychain・GitHub の公開鍵/SAML 認可を調査する。
-- `gh auth status`、`gh auth refresh`、`gh auth login` を含む GitHub API 操作も sandbox 外の実行承認を求める。sandbox 内の「token invalid」や通信失敗を認証失効と決めつけず、sandbox 外で再確認してから再認証する。
+- GitHub に対する `git fetch` / `pull` / `push` / `ls-remote` と `ssh -T git@github.com` は、`exec_command` で `sandbox_permissions: "require_escalated"` を明示して host 実行の承認を求める。「外部ネットワーク」だけの許可は SSH agent / Keychain へのアクセスを与えない。通常の sandbox 内で試行したり、別経路へ fallback してはならない。
+- `Permission denied (publickey)` が出た場合は HTTPS やトークン認証へ切り替えず、同じコマンドを `sandbox_permissions: "require_escalated"` で再実行する。この指定が使えない実行環境では停止して報告する。host 側の `ssh-add -l` で鍵が見えない場合を除き、ユーザーに `ssh-add` やパスフレーズ再入力を案内しない。
+- `gh auth status`、`gh auth refresh`、`gh auth login` を含む GitHub API 操作も `sandbox_permissions: "require_escalated"` を明示する。sandbox 内の「token invalid」や通信失敗を認証失効と決めつけず、host 実行で再確認してから再認証する。
 - ユーザーが明示しない限り commit, push しない。
 - ユーザー向けのお知らせや外部メッセージは、明示的に送信を許可されるまで下書きとして扱う。
 
