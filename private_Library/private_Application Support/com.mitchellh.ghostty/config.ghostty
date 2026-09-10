@@ -63,25 +63,6 @@ notify-on-command-finish-action = bell,notify
 
 
 # ──────────────────────────────────────────
-# クイックターミナル（Hotkey Window）
-# ──────────────────────────────────────────
-# ショートカット（下の keybind 参照）で画面に呼び出せる
-# 一時的な作業やコマンド実行に便利
-
-# 表示位置（top / bottom / left / right / center）
-quick-terminal-position = top
-
-# 表示サイズ（画面に対する割合）
-quick-terminal-size = 40%
-
-# フォーカスが外れたら自動で隠す
-quick-terminal-autohide = true
-
-# 表示/非表示のアニメーション時間（秒）
-quick-terminal-animation-duration = 0.2
-
-
-# ──────────────────────────────────────────
 # キーバインド
 # ──────────────────────────────────────────
 
