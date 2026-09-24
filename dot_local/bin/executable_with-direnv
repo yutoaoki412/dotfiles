@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Run a command with the current Git workspace's direnv environment.
+set -euo pipefail
+
+if [[ $# -eq 0 ]]; then
+  echo "usage: with-direnv <command> [args...]" >&2
+  exit 64
+fi
+
+if ! command -v direnv >/dev/null 2>&1; then
+  echo "direnv is required; install it with Homebrew first" >&2
+  exit 127
+fi
+
+workspace="$(git rev-parse --show-toplevel 2>/dev/null || pwd -P)"
+exec direnv exec "$workspace" "$@"

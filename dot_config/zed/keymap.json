@@ -1,0 +1,14 @@
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "cmd-j": "workspace::NewTerminal",
+      "cmd-shift-j": "workspace::NewCenterTerminal"
+    }
+  },
+  {
+    "bindings": {
+      "cmd-g": "git_panel::ToggleFocus"
+    }
+  }
+]

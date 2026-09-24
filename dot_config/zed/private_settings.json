@@ -1,0 +1,236 @@
+{
+  // ─────────────────────────────
+  // AI
+  // ─────────────────────────────
+
+  "agent": {
+    "notify_when_agent_waiting": "all_screens"
+  },
+  "collaboration_panel": {
+    "button": false
+  },
+
+  // 補完と Agent パネルには GitHub Copilot を使用
+  "disable_ai": false,
+  "edit_predictions": {
+    "provider": "copilot"
+  },
+  "agent_servers": {
+    "github-copilot-cli": {
+      "type": "registry"
+    }
+  },
+
+  // ─────────────────────────────
+  // テーマ
+  // ─────────────────────────────
+
+  // エディタ・ファイル・各種パネルは GitHub Dark Dimmed
+  "theme": "GitHub Dark Dimmed",
+
+  "icon_theme": "VSCode Great Icons Theme",
+
+  // ターミナル部分だけ One Dark の配色に上書き
+  "theme_overrides": {
+    "GitHub Dark Dimmed": {
+      // ターミナルだけ One Dark（本文は Ghostty 寄りに明るく）
+      "terminal.background": "#282c34ff",
+      "terminal.foreground": "#e6e8ecff",
+      "terminal.bright_foreground": "#f5f6f8ff",
+      "terminal.dim_foreground": "#6b7380ff",
+
+      "terminal.ansi.black": "#282c34ff",
+      "terminal.ansi.bright_black": "#636d83ff",
+      "terminal.ansi.dim_black": "#3b3f4aff",
+
+      "terminal.ansi.red": "#e06c75ff",
+      "terminal.ansi.bright_red": "#ea858bff",
+      "terminal.ansi.dim_red": "#a7545aff",
+
+      "terminal.ansi.green": "#98c379ff",
+      "terminal.ansi.bright_green": "#aad581ff",
+      "terminal.ansi.dim_green": "#6d8f59ff",
+
+      "terminal.ansi.yellow": "#e5c07bff",
+      "terminal.ansi.bright_yellow": "#ffd885ff",
+      "terminal.ansi.dim_yellow": "#b8985bff",
+
+      "terminal.ansi.blue": "#61afefff",
+      "terminal.ansi.bright_blue": "#85c1ffff",
+      "terminal.ansi.dim_blue": "#457cadff",
+
+      "terminal.ansi.magenta": "#c678ddff",
+      "terminal.ansi.bright_magenta": "#d398ebff",
+      "terminal.ansi.dim_magenta": "#8d54a0ff",
+
+      "terminal.ansi.cyan": "#56b6c2ff",
+      "terminal.ansi.bright_cyan": "#6ed5deff",
+      "terminal.ansi.dim_cyan": "#3c818aff",
+
+      "terminal.ansi.white": "#e6e8ecff",
+      "terminal.ansi.bright_white": "#ffffffff",
+      "terminal.ansi.dim_white": "#7a828cff",
+
+      // カーソルを白にする
+      "players": [
+        {
+          "cursor": "#ffffffff",
+          "background": "#74ade8ff",
+          "selection": "#74ade83d"
+        }
+      ]
+    }
+  },
+
+  // ─────────────────────────────
+  // フォント
+  // ─────────────────────────────
+
+  // macOS標準UIフォント
+  "ui_font_family": ".SystemUIFont",
+  "ui_font_size": 15,
+
+  // Ghosttyと統一
+  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
+  "buffer_font_size": 15,
+
+  "buffer_line_height": {
+    "custom": 1.4
+  },
+
+  // ─────────────────────────────
+  // エディタ
+  // ─────────────────────────────
+
+  "current_line_highlight": "line",
+
+  "cursor_blink": false,
+
+  "minimap": {
+    "show": "never"
+  },
+
+  "scrollbar": {
+    "show": "auto",
+    "git_diff": true,
+    "search_results": true,
+    "selected_text": true,
+    "selected_symbol": true,
+    "diagnostics": "warning"
+  },
+
+  "indent_guides": {
+    "enabled": true,
+    "coloring": "fixed",
+    "background_coloring": "disabled"
+  },
+
+  // ─────────────────────────────
+  // ペイン
+  // ─────────────────────────────
+
+  "active_pane_modifiers": {
+    "border_size": 1.0,
+    "inactive_opacity": 1.0
+  },
+
+  // ─────────────────────────────
+  // タイトルバー
+  // ─────────────────────────────
+
+  "title_bar": {
+  //   "show_branch_name": true,
+  //   "show_project_items": true,
+
+  //   "show_branch_status_icon": false,
+    "show_onboarding_banner": false,
+  //   "show_user_picture": false,
+  //   "show_user_menu": false,
+    // "show_sign_in": false,
+  //   "show_menus": false
+  },
+
+  // ─────────────────────────────
+  // タブ
+  // ─────────────────────────────
+
+  "tab_bar": {
+    "show": true,
+
+    // 戻る・進むボタンは非表示
+    "show_nav_history_buttons": false,
+
+    // ＋、分割、ズームなどは表示
+    "show_tab_bar_buttons": true
+  },
+
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+
+    // エラーだけタブに表示
+    "show_diagnostics": "errors",
+
+    "show_close_button": "hover",
+    "close_position": "right",
+    "activate_on_close": "history"
+  },
+
+  // ─────────────────────────────
+  // プロジェクトパネル
+  // ─────────────────────────────
+
+  "project_panel": {
+    "dock": "right",
+
+    "default_width": 250,
+    "entry_spacing": "standard",
+
+    "file_icons": true,
+    "folder_icons": true,
+    "git_status": true,
+
+    "bold_folder_labels": true,
+    "indent_size": 20,
+
+    "indent_guides": {
+      "show": "always"
+    },
+
+    "sticky_scroll": true,
+    "auto_reveal_entries": true,
+
+    // src/components のような階層を勝手に圧縮しない
+    "auto_fold_dirs": false,
+
+    "sort_mode": "directories_first"
+  },
+
+  // ─────────────────────────────
+  // ターミナル
+  // ─────────────────────────────
+
+  "terminal": {
+    "dock": "bottom",
+    "default_height": 380,
+
+    "font_family": "JetBrainsMono Nerd Font Mono",
+    "font_size": 15,
+
+    // CodexなどのTUIで罫線が崩れにくい
+    "line_height": "standard",
+
+    // One Dark本来の色をそのまま使う
+    "minimum_contrast": 0,
+
+    "blinking": "off",
+    "cursor_shape": "block",
+
+    "scrollbar": {
+      "show": "never"
+    }
+  },
+
+  // ターミナルを横幅いっぱいに表示
+  "bottom_dock_layout": "full"
+}

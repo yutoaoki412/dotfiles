@@ -1,0 +1,14 @@
+# Local credentials and machine state must stay outside this repository.
+.env
+.env.*
+.envrc
+.envrc.local
+.direnv/
+*.pem
+*.key
+*.p12
+*.pfx
+*.tfstate
+*.tfstate.*
+private_dot_codex/
+.DS_Store
