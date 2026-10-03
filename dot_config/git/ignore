@@ -8,7 +8,10 @@
 # macOS
 .DS_Store
 
-# エディタ
+# エディタ・ツール
 *.swp
 *.swo
 *~
+
+# AI エージェントのローカル設定
+**/.claude/settings.local.json

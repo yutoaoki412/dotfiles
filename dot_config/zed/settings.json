@@ -3,14 +3,26 @@
   // AI
   // ─────────────────────────────
 
+  "outline_panel": {
+    "dock": "left"
+  },
   "agent": {
-    "notify_when_agent_waiting": "all_screens"
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "dock": "left"
   },
   "collaboration_panel": {
+    "dock": "left",
     "button": false
   },
 
-  // 補完と Agent パネルには GitHub Copilot を使用
+  // 社内承認済みの GitHub Copilot のみ
+  // - Edit Prediction（補完）+ External Agents（Agent パネルの Copilot CLI）
+  // - Zed Agent / Cursor ACP は使わない
+  // - Claude Code / Codex / Cursor はターミナルから利用
   "disable_ai": false,
   "edit_predictions": {
     "provider": "copilot"
@@ -91,7 +103,7 @@
   "ui_font_size": 15,
 
   // Ghosttyと統一
-  "buffer_font_family": "JetBrainsMono Nerd Font Mono",
+  "buffer_font_family": "JetBrainsMono Nerd Font",
   "buffer_font_size": 15,
 
   "buffer_line_height": {
@@ -181,7 +193,7 @@
   // ─────────────────────────────
 
   "project_panel": {
-    "dock": "right",
+    "dock": "left",
 
     "default_width": 250,
     "entry_spacing": "standard",
@@ -214,7 +226,7 @@
     "dock": "bottom",
     "default_height": 380,
 
-    "font_family": "JetBrainsMono Nerd Font Mono",
+    "font_family": "JetBrainsMono Nerd Font",
     "font_size": 15,
 
     // CodexなどのTUIで罫線が崩れにくい

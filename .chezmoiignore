@@ -1,3 +1,6 @@
-# Repository documentation and Homebrew bundle definitions are source-only.
 README.md
 Brewfile
+.envrc
+AGENTS.md
+.agents
+.claude
