@@ -19,7 +19,7 @@ if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-# Bedrock の関数・個人用エイリアスなどは非公開設定に置く。
+# 個人用エイリアスなどは非公開設定に置く。
 if [[ -r "$HOME/.config/zsh/local.zsh" ]]; then
   source "$HOME/.config/zsh/local.zsh"
 fi
