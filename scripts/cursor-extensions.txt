@@ -1,0 +1,18 @@
+# 実機のCursor拡張。導入はscripts/install-cursor-extensionsで明示実行する。
+anysphere.cursorpyright
+anysphere.remote-containers
+anysphere.remote-ssh
+dbaeumer.vscode-eslint
+dbtlabsinc.dbt
+esbenp.prettier-vscode
+github.vscode-github-actions
+golang.go
+hashicorp.terraform
+llvm-vs-code-extensions.lldb-dap
+ms-pyright.pyright
+ms-python.black-formatter
+ms-python.debugpy
+ms-python.python
+ms-python.vscode-python-envs
+openai.chatgpt
+swiftlang.swift-vscode

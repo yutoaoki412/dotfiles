@@ -1,86 +1,42 @@
-# ──────────────────────────────────────────
-# Taps
-# ──────────────────────────────────────────
+# 設定の反映とパッケージ導入は分ける。導入は scripts/install-packages。
+# プロジェクト指定のバージョンは各リポジトリの mise.toml で管理する。
 tap "oven-sh/bun"
 
-# ──────────────────────────────────────────
-# CLI Tools
-# ──────────────────────────────────────────
-# Manage dotfiles across multiple diverse machines
+# 基盤 CLI
 brew "chezmoi"
-# GitHub command-line tool
 brew "gh"
-# Per-directory environment variable manager
 brew "direnv"
-# Fast, cross-shell prompt
+brew "mise"
 brew "starship"
-# Fast text search tool
 brew "ripgrep"
-# Tool for exploring each layer in a docker image
+brew "jq"
+brew "coreutils"
 brew "dive"
-
-# ──────────────────────────────────────────
-# Cloud & DevOps
-# ──────────────────────────────────────────
-# Official Amazon AWS command-line interface
 brew "awscli"
-# Tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
+cask "codex"
 
-# ──────────────────────────────────────────
-# Development Runtimes
-# ──────────────────────────────────────────
-# Go programming language
+# プロジェクトに指定がない場合のランタイム・パッケージ管理
 brew "go"
-# Node.js JavaScript runtime
 brew "node"
+brew "python" # source validation uses Python 3.11+ / tomllib
+brew "pnpm"
+brew "oven-sh/bun/bun"
 
-# ──────────────────────────────────────────
-# GUI Applications (Casks)
-# ──────────────────────────────────────────
-# Fast, native, feature-rich terminal emulator
+# 既存のアプリを上書きしない導入は scripts/install-packages を使う。
 cask "ghostty"
-# High-performance, multiplayer code editor
 cask "zed"
-# AI-powered code editor
 cask "cursor"
-# Productivity tool and launcher
 cask "raycast"
-
-# ──────────────────────────────────────────
-# Fonts (Casks)
-# ──────────────────────────────────────────
-# Developer font with ligatures and Nerd Font icons (used by Ghostty and Zed)
 cask "font-jetbrains-mono-nerd-font"
 
-# ──────────────────────────────────────────
-# VS Code / Cursor Extensions
-# ──────────────────────────────────────────
-vscode "anysphere.cursorpyright"
-vscode "anysphere.remote-containers"
-vscode "anysphere.remote-ssh"
-vscode "dbaeumer.vscode-eslint"
-vscode "esbenp.prettier-vscode"
-vscode "github.vscode-github-actions"
-vscode "golang.go"
-vscode "hashicorp.terraform"
-vscode "llvm-vs-code-extensions.lldb-dap"
-vscode "ms-pyright.pyright"
-vscode "ms-python.black-formatter"
-vscode "ms-python.debugpy"
-vscode "ms-python.python"
-vscode "ms-python.vscode-python-envs"
-vscode "swiftlang.swift-vscode"
-
-# ──────────────────────────────────────────
-# Go Tools & Packages
-# ──────────────────────────────────────────
+# 実機で使用中の Go ツール。既存ツールを更新せず、不足分だけを導入する。
 go "github.com/go-delve/delve/cmd/dlv"
 go "golang.org/x/tools/cmd/goimports"
 go "golang.org/x/tools/gopls"
 go "github.com/josharian/impl"
 
-# ──────────────────────────────────────────
-# NPM Packages
-# ──────────────────────────────────────────
 npm "@github/copilot"
+
+# Cursor 拡張は scripts/cursor-extensions.txt と install-cursor-extensions で管理。
+# brew の vscode DSL は code を優先するため使用しない。

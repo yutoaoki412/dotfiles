@@ -1,0 +1,7 @@
+# Personal identity is supplied by private machine-config.
+[init]
+    defaultBranch = main
+[credential]
+    helper = osxkeychain
+[include]
+    path = config.local

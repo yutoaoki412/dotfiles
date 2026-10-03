@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+# Add missing extensions to Cursor explicitly, without touching VS Code.
+set -euo pipefail
+
+repository="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+mode="${1:-install}"
+if [[ $# -gt 1 || ( "$mode" != install && "$mode" != --check ) ]]; then
+  echo "usage: scripts/install-cursor-extensions [--check]" >&2
+  exit 64
+fi
+
+cursor_cli="${CURSOR_CLI:-}"
+if [[ -n "$cursor_cli" && ! -x "$cursor_cli" ]]; then
+  echo "CURSOR_CLI must be the executable path to Cursor's CLI." >&2
+  exit 127
+fi
+if [[ -z "$cursor_cli" ]]; then
+  for candidate in "/Applications/Cursor.app/Contents/Resources/app/bin/cursor" "$HOME/Applications/Cursor.app/Contents/Resources/app/bin/cursor"; do
+    if [[ -x "$candidate" ]]; then
+      cursor_cli="$candidate"
+      break
+    fi
+  done
+fi
+if [[ -z "$cursor_cli" ]]; then
+  if command -v cursor >/dev/null 2>&1; then
+    cursor_cli="$(command -v cursor)"
+  else
+    echo "Cursor is required; install Cursor and run this script again." >&2
+    exit 127
+  fi
+fi
+
+installed="$("$cursor_cli" --list-extensions)"
+missing=0
+while IFS= read -r extension || [[ -n "$extension" ]]; do
+  [[ -z "$extension" || "$extension" == \#* ]] && continue
+  if printf '%s\n' "$installed" | grep -Fxiq -- "$extension"; then
+    continue
+  fi
+  missing=1
+  if [[ "$mode" == --check ]]; then
+    echo "Missing Cursor extension: $extension" >&2
+  else
+    "$cursor_cli" --install-extension "$extension"
+  fi
+done < "$repository/scripts/cursor-extensions.txt"
+
+if [[ "$mode" == --check ]]; then
+  exit "$missing"
+fi

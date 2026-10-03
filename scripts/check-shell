@@ -1,0 +1,122 @@
+#!/usr/bin/env python3
+"""Verify shell startup and installer boundaries with an isolated HOME and stubs."""
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+
+root = Path(__file__).resolve().parents[1]
+
+
+def run(argv, *, env=None, cwd=None, expected=0):
+    result = subprocess.run(argv, env=env, cwd=cwd, text=True, capture_output=True)
+    if result.returncode != expected:
+        raise AssertionError(f"{argv}: exit {result.returncode}\n{result.stdout}\n{result.stderr}")
+    return result.stdout
+
+
+def executable(path, contents):
+    path.write_text(contents)
+    path.chmod(0o755)
+
+
+for file in ("dot_zshenv", "dot_zprofile", "dot_zshrc"):
+    run(["zsh", "-n", str(root / "home" / file)])
+for file in ("install-packages", "install-cursor-extensions"):
+    run(["bash", "-n", str(root / "scripts" / file)])
+run(["bash", "-n", str(root / "home/dot_local/bin/executable_with-direnv")])
+run(["ruby", "-c", str(root / "Brewfile")])
+
+with tempfile.TemporaryDirectory(prefix="dotfiles-shell-check-") as directory:
+    sandbox = Path(directory).resolve()
+    home = sandbox / "home"
+    bins = home / ".local/bin"
+    bins.mkdir(parents=True)
+    shims = home / ".local/share/mise/shims"
+    shims.mkdir(parents=True)
+    private = home / ".config/zsh"
+    private.mkdir(parents=True)
+    (private / "local.zshenv").write_text("export SHELL_PRIVATE_ENV=loaded\n")
+    (private / "local.zsh").write_text("export SHELL_PRIVATE_INTERACTIVE=loaded\n")
+    for file in ("zshenv", "zprofile", "zshrc"):
+        shutil.copyfile(root / "home" / f"dot_{file}", home / f".{file}")
+    for tool, output in (("mise", "export SHELL_MISE=loaded"),
+                         ("direnv", "export SHELL_DIRENV=loaded"),
+                         ("starship", "export SHELL_STARSHIP=loaded")):
+        executable(bins / tool, f"#!/bin/sh\nprintf '%s\\n' '{output}'\n")
+    executable(shims / "dotfiles-tool", "#!/bin/sh\nprintf 'shim-selected\\n'\n")
+    env = {"HOME": str(home), "PATH": "/usr/bin:/bin:/usr/sbin:/sbin", "TERM": "dumb"}
+    command = "print -r -- $SHELL_PRIVATE_ENV; dotfiles-tool; print -r -- ${(j.:.)path}"
+    for flags in ("-c", "-lc", "-ic", "-lic"):
+        output = run(["zsh", flags, command], env=env, cwd=sandbox)
+        assert "loaded\nshim-selected" in output, output
+        paths = output.splitlines()[-1].split(":")
+        assert len(paths) == len(set(paths)), paths
+        assert str(shims) in paths and "/opt/homebrew/bin" in paths, paths
+    output = run(["zsh", "-ic", "print -r -- $SHELL_MISE:$SHELL_DIRENV:$SHELL_STARSHIP:$SHELL_PRIVATE_INTERACTIVE; whence compdef"], env=env, cwd=sandbox)
+    assert "loaded:loaded:loaded:loaded" in output and "compdef" in output, output
+
+    log = sandbox / "brew.jsonl"
+    executable(bins / "brew", """#!/usr/bin/env python3
+import json, os, sys
+with open(os.environ['TEST_LOG'], 'a') as out:
+    out.write(json.dumps({'argv': sys.argv[1:], 'skip': os.getenv('HOMEBREW_BUNDLE_CASK_SKIP'), 'auto': os.getenv('HOMEBREW_NO_AUTO_UPDATE'), 'cleanup': os.getenv('HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP')}) + '\\n')
+sys.exit(1 if sys.argv[1:3] == ['list', '--cask'] else 0)
+""")
+    for app in ("Ghostty.app", "Zed.app", "Cursor.app", "Raycast.app"):
+        (home / "Applications" / app).mkdir(parents=True)
+    test_env = dict(os.environ, HOME=str(home), PATH=f"{bins}:{os.environ['PATH']}",
+                    TEST_LOG=str(log), HOMEBREW_BUNDLE_CASK_SKIP="kept-cask",
+                    HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP="1")
+    for mode, expected in (([], "install"), (["--check"], "check")):
+        log.write_text("")
+        run([str(root / "scripts/install-packages"), *mode], env=test_env, cwd=sandbox)
+        calls = [json.loads(line) for line in log.read_text().splitlines()]
+        bundle = [call for call in calls if call["argv"][0] == "bundle"]
+        assert len(bundle) == 1 and bundle[0]["argv"][1] == expected, calls
+        assert "--no-upgrade" in bundle[0]["argv"], calls
+        assert bundle[0]["cleanup"] is None and bundle[0]["auto"] == "1", calls
+        assert set(bundle[0]["skip"].split()) >= {"kept-cask", "ghostty", "zed", "cursor", "raycast"}, calls
+
+    # The wrapper must preserve argv, Git root selection, and child exit status.
+    executable(bins / "direnv", """#!/usr/bin/env python3
+import json, os, sys
+assert sys.argv[1] == 'exec'
+print(json.dumps(sys.argv[2:]), flush=True)
+sys.exit(int(os.getenv('TEST_EXIT', '0')))
+""")
+    project = sandbox / "project"
+    project.mkdir()
+    run(["git", "init", "-q", str(project)])
+    nested = project / "nested"
+    nested.mkdir()
+    wrapper = str(root / "home/dot_local/bin/executable_with-direnv")
+    output = run([wrapper, "printf", "a b", "*.tf"], env=test_env, cwd=nested)
+    assert json.loads(output) == [str(project), "printf", "a b", "*.tf"], output
+    run([wrapper, "false"], env=dict(test_env, TEST_EXIT="23"), cwd=project, expected=23)
+    run([wrapper], env=test_env, cwd=sandbox, expected=64)
+
+    # Cursor uses its own executable and adds only missing extensions.
+    manifest = root / "scripts/cursor-extensions.txt"
+    if manifest.exists():
+        wanted = [line for line in manifest.read_text().splitlines() if line and not line.startswith("#")]
+        assert wanted, "Cursor extension manifest is empty"
+        cursor_log = sandbox / "cursor.log"
+        cursor = bins / "test-cursor"
+        executable(cursor, """#!/usr/bin/env python3
+import os, sys
+if sys.argv[1:] == ['--list-extensions']:
+    print(os.environ['TEST_INSTALLED'])
+else:
+    assert sys.argv[1] == '--install-extension'
+    with open(os.environ['CURSOR_LOG'], 'a') as out:
+        out.write(sys.argv[2] + '\\n')
+""")
+        cursor_env = dict(test_env, CURSOR_CLI=str(cursor), CURSOR_LOG=str(cursor_log), TEST_INSTALLED=wanted[0])
+        run([str(root / "scripts/install-cursor-extensions")], env=cursor_env, cwd=sandbox)
+        assert cursor_log.read_text().splitlines() == wanted[1:]
+        run([str(root / "scripts/install-cursor-extensions"), "--check"], env=cursor_env, cwd=sandbox, expected=1)
+
+print("Shell startup, package installer, Cursor target and direnv wrapper checks passed.")

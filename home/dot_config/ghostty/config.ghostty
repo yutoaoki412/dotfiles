@@ -1,10 +1,8 @@
-# ╔══════════════════════════════════════════════════════════════╗
-# ║                    Ghostty 設定ファイル                        ║
-# ║  場所: ~/.config/ghostty/config                              ║
-# ║  リロード: Ctrl+Shift+R（再起動不要）                            ║
-# ╚══════════════════════════════════════════════════════════════╝
+# Ghostty 1.2.3以降: ~/.config/ghostty/config.ghostty
+# 通常の設定は Ctrl+Shift+R で再読み込み。
+# Quick Terminalの位置変更はGhosttyの完全な再起動が必要。
 
-font-family = "JetBrainsMono Nerd Font"
+font-family = "JetBrainsMono Nerd Font Mono"
 
 # ──────────────────────────────────────────
 # 外観（背景・透明度）
@@ -42,7 +40,7 @@ mouse-hide-while-typing = true
 # ──────────────────────────────────────────
 # ウィンドウ・起動設定
 # ──────────────────────────────────────────
-working-directory = ~/Developer
+working-directory = ~/Developer/github
 
 # 新しいウィンドウ・タブ・スプリットを開いたとき、現在のディレクトリを引き継ぐ
 window-inherit-working-directory = true
@@ -89,5 +87,5 @@ keybind = ctrl+shift+r=reload_config
 
 # クイックターミナルの表示/非表示トグル
 #   global: を付けると Ghostty が背面にあっても反応するグローバルショートカット
-#   ctrl+m = Ctrl+M
+#   ctrl+m = Ctrl+M。macOSのアクセシビリティ権限が必要。
 keybind = global:ctrl+m=toggle_quick_terminal

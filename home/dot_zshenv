@@ -1,0 +1,17 @@
+# 全 zsh 共通の軽量な PATH 設定。外部プログラムは起動しない。
+typeset -U path PATH
+
+if [[ -d /opt/homebrew/bin ]]; then
+  path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+elif [[ -x /usr/local/bin/brew ]]; then
+  path=(/usr/local/bin /usr/local/sbin $path)
+fi
+
+# shims は IDE・非対話シェルにもプロジェクトの mise 指定を反映する。
+path=("$HOME/.local/share/mise/shims" "$HOME/.local/bin" "$HOME/go/bin" $path)
+export PATH
+
+# 個人用の環境設定は非公開 machine-config から配置する。
+if [[ -r "$HOME/.config/zsh/local.zshenv" ]]; then
+  source "$HOME/.config/zsh/local.zshenv"
+fi

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# Explicitly install missing dependencies, without requesting upgrades or cleanup.
+# Homebrew may update dependencies needed by a newly installed formula.
+set -euo pipefail
+
+repository="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd -P)"
+mode="${1:-install}"
+if [[ $# -gt 1 || ( "$mode" != install && "$mode" != --check ) ]]; then
+  echo "usage: scripts/install-packages [--check]" >&2
+  exit 64
+fi
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Homebrew is required. Install it from https://brew.sh/ and run this script again." >&2
+  exit 127
+fi
+
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+# A caller's cleanup preferences must not turn this installer into an uninstaller.
+unset HOMEBREW_BUNDLE_INSTALL_CLEANUP HOMEBREW_BUNDLE_FORCE_INSTALL_CLEANUP
+
+# Native-installed GUI apps keep their existing installation and update path.
+skip_casks="${HOMEBREW_BUNDLE_CASK_SKIP:-}"
+while IFS='|' read -r cask app; do
+  if [[ -d "/Applications/$app" || -d "$HOME/Applications/$app" ]]; then
+    if ! brew list --cask "$cask" >/dev/null 2>&1; then
+      echo "Keeping existing $app (not managed by Homebrew)."
+      skip_casks="${skip_casks:+$skip_casks }$cask"
+    fi
+  fi
+done <<'CASKS'
+ghostty|Ghostty.app
+zed|Zed.app
+cursor|Cursor.app
+raycast|Raycast.app
+CASKS
+
+export HOMEBREW_BUNDLE_CASK_SKIP="$skip_casks"
+if [[ "$mode" == --check ]]; then
+  exec brew bundle check --no-upgrade --verbose --file="$repository/Brewfile"
+fi
+brew bundle install --no-upgrade --file="$repository/Brewfile"
+echo "Package installation complete. Cursor extensions: scripts/install-cursor-extensions"

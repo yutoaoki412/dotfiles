@@ -1,14 +1,17 @@
-# Local credentials and machine state must stay outside this repository.
+# Personal configuration belongs in the private sibling repository.
 .env
 .env.*
-.envrc
-.envrc.local
-.direnv/
+!.env.example
+.DS_Store
+*.log
 *.pem
 *.key
-*.p12
-*.pfx
-*.tfstate
-*.tfstate.*
 private_dot_codex/
-.DS_Store
+private_dot_claude/
+private_dot_aws/
+private_dot_shared-ai/
+auth.json
+credentials.json
+
+__pycache__/
+*.py[cod]

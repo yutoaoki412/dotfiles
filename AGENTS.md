@@ -1,83 +1,22 @@
-# AGENTS.md
+# dotfiles の作業規約
 
-本ドキュメントは、このdotfilesリポジトリ（[yutoaoki412/dotfiles](https://github.com/yutoaoki412/dotfiles)）で作業するすべてのAIエージェント（OpenAI Codex、Claude Code、Cursor、Gemini/Antigravity等）に対する技術的コンテキスト、制約事項、および運用規定です。
+公開できる macOS 共通設定を chezmoi で管理する。個人・業務の AI 指示、アカウント、個人用シェル設定は隣接する非公開 machine-config に置く。秘密鍵、トークン、認証ファイル、履歴はどちらにも取り込まない。
 
----
+## 正本と配置
 
-## 1. リポジトリの前提とアーキテクチャ
+- 作業リポジトリは `git rev-parse --show-toplevel`、chezmoi の設定元は `chezmoi source-path` で確認する。特定のユーザー名を前提にしない。
+- 標準配置は `~/Developer/github/dotfiles` と `~/Developer/github/machine-config`。
+- `.chezmoiroot` が `home/` を設定元にする。README、Brewfile、scripts、AI 規約をホームへ展開しない。
+- ツールが対応する場合は XDG の設定パスを使う。zsh はホーム、Cursor は macOS の Application Support を使う。
+- 公開設定の反映とパッケージの導入は分ける。自動インストール・アップグレード・cleanup を追加しない。
 
-- **管理方式**: [chezmoi](https://www.chezmoi.io) を用いた宣言的な設定管理。
-- **配置規約**: XDG Base Directory仕様に完全準拠し、設定ファイルはホームディレクトリ直下ではなく `~/.config`（リポジトリ内では `dot_config/`）に配置します。
-- **対象環境**: Apple Silicon macOS（Homebrew導入環境）。
-- **SSOT（信頼できる単一の情報源）**:
-  - 作業ディレクトリは `/Users/aokiyuto/Developer/dotfiles` です。
-  - chezmoiの `sourceDir` はこのディレクトリに固定されています（`~/.local/share/chezmoi` は本リポジトリへのシンボリックリンクです）。
-  - すべてのファイル作成・編集・Git操作は必ず `/Users/aokiyuto/Developer/dotfiles` 内で実行してください。
+## 変更と確認
 
----
+1. 関係する source ファイルを編集し、render 後の構文を検査する。
+2. `chezmoi diff` で対象と既存のローカル変更を確認する。
+3. 依頼された対象だけ `chezmoi apply <対象パス>` で反映する。
+4. アプリの実効設定・動作と対象の `chezmoi status` を確認する。調査のみの場合は反映しない。
 
-## 2. 必須の安全規範と制約事項
+`./scripts/check` は公開 source の検査、`./scripts/install-packages --check` はパッケージの充足確認。パッケージを導入する依頼では `./scripts/install-packages`、Cursor 拡張には `./scripts/install-cursor-extensions` を使う。
 
-- **秘密情報の混入禁止**: APIキー、個人トークン、SSH秘密鍵、クラウド認証情報をリポジトリ内に配置してはいけません。
-- **ホームディレクトリへの汚染防止**:
-  - リポジトリ管理用ファイル（`README.md`、`Brewfile`、`AGENTS.md`、`.envrc` 等）がホームディレクトリ直下に展開されないよう、`.chezmoiignore` を必ず維持してください。
-- **パスのポータビリティ**:
-  - 設定ファイル内に `/Users/aokiyuto` 等の環境依存パスをハードコードしてはいけません。`$HOME`、`~`、またはchezmoiテンプレート変数（`{{ .chezmoi.homeDir }}`）を使用してください。
-- **タスク完了基準（定義済みのDone）**:
-  - 変更作業の完了時は、必ず `chezmoi status` および `chezmoi diff` を実行し、リポジトリとローカル実環境の間に予期しない差分が残っていないことを検証してください。
-
----
-
-## 3. 主要ファイルと配置対応
-
-| リポジトリ内のパス | 展開先パス | 役割 |
-|---|---|---|
-| `dot_config/git/config.tmpl` | `~/.config/git/config` | Git設定（メールアドレスはchezmoiデータから注入） |
-| `dot_config/git/ignore` | `~/.config/git/ignore` | 大域的gitignore（Git標準により自動認識） |
-| `dot_config/ghostty/config` | `~/.config/ghostty/config` | Ghosttyターミナル設定（XDG標準パス） |
-| `dot_config/starship.toml` | `~/.config/starship.toml` | Starshipプロンプト設定 |
-| `dot_config/zed/settings.json` | `~/.config/zed/settings.json` | Zedエディタ設定 |
-| `dot_config/zed/keymap.json` | `~/.config/zed/keymap.json` | Zedキーバインド |
-| `dot_local/bin/executable_with-direnv` | `~/.local/bin/with-direnv` | ワークスペースdirenvラッパー |
-| `private_dot_ssh/private_config.tmpl` | `~/.ssh/config` | SSH設定（GitHubアカウント分岐） |
-| `dot_zprofile` | `~/.zprofile` | ログインシェル（Homebrew環境、重複排除PATH） |
-| `dot_zshrc` | `~/.zshrc` | 対話シェル（Starship/direnvフック、エイリアス） |
-| `Brewfile` | （リポジトリ直下） | CLIツール、GUI Cask、フォント定義 |
-| `.chezmoiignore` | （リポジトリ直下） | ホーム直下への誤展開を防止する除外リスト |
-
----
-
-## 4. 標準コマンド
-
-### 状態確認と差分検証
-```bash
-# chezmoi の管理状態と差分を確認
-chezmoi status
-chezmoi diff
-
-# Homebrew パッケージの過不足を確認
-brew bundle check --verbose --file=Brewfile
-```
-
-### 反映と同期
-```bash
-# リポジトリの変更をホームディレクトリに反映
-chezmoi apply
-
-# 実環境で直接編集した内容をリポジトリへ取り込む
-chezmoi re-add <対象の実ファイルパス>
-```
-
-### 各種ツールの構文検証
-```bash
-# Ghostty 設定のバリデーション
-ghostty +validate-config
-
-# Git 大域的除外の動作確認
-git check-ignore -v <確認対象ファイル>
-```
-
----
-
-## 5. 多段手順の参照先
-設定の追加・更新・Brewfileの再同期などの詳細な多段ワークフローは、`.agents/skills/dotfiles-workflow/SKILL.md` を参照してください。
+未コミットの変更を消さない。commit・push・外部送信は明示された依頼の範囲だけ行う。詳細は `.agents/skills/dotfiles-workflow/SKILL.md`。

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Run a command with the current Git workspace's approved direnv environment.
+set -euo pipefail
+
+# Native apps may launch without shell startup files.
+if [[ -d /opt/homebrew/bin ]]; then
+  export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH"
+elif [[ -x /usr/local/bin/brew ]]; then
+  export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:/usr/local/bin:/usr/local/sbin:$PATH"
+else
+  export PATH="$HOME/.local/share/mise/shims:$HOME/.local/bin:$PATH"
+fi
+
+if [[ $# -eq 0 ]]; then
+  echo "usage: with-direnv <command> [args...]" >&2
+  exit 64
+fi
+
+if ! command -v direnv >/dev/null 2>&1; then
+  echo "direnv is required; install it with Homebrew first" >&2
+  exit 127
+fi
+
+workspace="$(git rev-parse --show-toplevel 2>/dev/null || pwd -P)"
+exec direnv exec "$workspace" "$@"

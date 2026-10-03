@@ -12,6 +12,8 @@ truncate_to_repo = true
 
 [gcloud]
 disabled = false
+# プロジェクトのdirenv等でCloud SDK構成を選択した場合だけ表示する。
+# 値は非公開設定に置き、リポジトリへ認証情報を含めない。
 detect_env_vars = ["CLOUDSDK_ACTIVE_CONFIG_NAME"]
 # 公式: https://starship.rs/config/#gcloud
 format = '[$symbol$account(@$domain) · \($project\)]($style) '

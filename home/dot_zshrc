@@ -1,0 +1,25 @@
+# 補完は Homebrew の completion directory を含めて初期化する。
+typeset -U path PATH fpath
+if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then
+  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+elif [[ -d /usr/local/share/zsh/site-functions ]]; then
+  fpath=(/usr/local/share/zsh/site-functions $fpath)
+fi
+autoload -Uz compinit
+compinit
+
+# mise はツール選択、direnv はプロジェクトの環境変数を担当する。
+if command -v mise >/dev/null 2>&1; then
+  eval "$(mise activate zsh)"
+fi
+if command -v direnv >/dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
+if command -v starship >/dev/null 2>&1; then
+  eval "$(starship init zsh)"
+fi
+
+# Bedrock の関数・個人用エイリアスなどは非公開設定に置く。
+if [[ -r "$HOME/.config/zsh/local.zsh" ]]; then
+  source "$HOME/.config/zsh/local.zsh"
+fi

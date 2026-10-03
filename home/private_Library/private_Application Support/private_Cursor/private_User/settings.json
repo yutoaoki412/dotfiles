@@ -1,0 +1,20 @@
+{
+  "workbench.activityBar.orientation": "vertical",
+  "workbench.colorTheme": "Visual Studio Dark",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 2000,
+  "editor.formatOnSave": true,
+  "git.autofetch": true,
+  "explorer.confirmDelete": false,
+  "git.confirmSync": false,
+  "git.openRepositoryInParentFolders": "always",
+  "explorer.confirmDragAndDrop": false,
+  "git.enableSmartCommit": true,
+  "window.autoDetectColorScheme": false,
+  "cursor.cpp.disabledLanguages": [
+    "plaintext"
+  ],
+  "go.formatTool": "goimports",
+  "go.toolsManagement.autoUpdate": true,
+  "workbench.editor.enablePreview": false
+}
