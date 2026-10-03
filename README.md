@@ -48,6 +48,10 @@ chezmoi apply
 
 プロジェクトのツール版は各 repo の mise.toml が優先。`.zshenv` で shims を選択し、対話シェルは mise activate と direnv hook を使う。`.envrc` の実行許可は内容確認後に各 repo で `direnv allow`。移動すると許可を取り直す場合がある。
 
+GCP の既定プロジェクトは、各 repo のローカル `.envrc` に `export CLOUDSDK_CORE_PROJECT=<project-id>` を指定する。dotfiles へのプロジェクト登録は不要。`.envrc` は Git 管理対象外なので、別の端末では作成し直す。作成・変更後は内容を確認して `direnv allow` を実行し、`direnv exec . printenv CLOUDSDK_CORE_PROJECT` で読み込みを確認する。シェルの現在の環境には、次のプロンプト表示時に反映される。
+
+`CLOUDSDK_CORE_PROJECT` はプロジェクト選択だけを行い、GCP の認証は別途必要。Starship の GCP 表示は `CLOUDSDK_ACTIVE_CONFIG_NAME` を条件にしているため、プロジェクトIDだけの指定では表示されない。
+
 Ghostty の設定再読込は Ctrl+Shift+R。Quick Terminal の位置変更は完全再起動が必要で、グローバル Ctrl+M は macOS のアクセシビリティ許可に依存する。開始先は `~/Developer/github`、既存ウィンドウ・タブ・split では作業ディレクトリを引き継ぐ。
 
 Zed 拡張は auto_install_extensions、Cursor 拡張は scripts/cursor-extensions.txt を正本にする。Starship の GCP 表示はプロジェクトで CLOUDSDK_ACTIVE_CONFIG_NAME が選ばれたときだけ表示する。
