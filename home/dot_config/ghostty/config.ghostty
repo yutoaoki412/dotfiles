@@ -42,8 +42,10 @@ mouse-hide-while-typing = true
 # ──────────────────────────────────────────
 working-directory = ~/Developer/github
 
-# 新しいウィンドウ・タブ・スプリットを開いたとき、現在のディレクトリを引き継ぐ
-window-inherit-working-directory = true
+# 新規ウィンドウは常にデフォルトディレクトリ（~/Developer）で開く
+window-inherit-working-directory = false
+
+# タブ・スプリットを開いたときは作業中のディレクトリを引き継ぐ
 tab-inherit-working-directory = true
 split-inherit-working-directory = true
 
