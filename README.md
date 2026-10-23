@@ -24,6 +24,8 @@ Apple Silicon macOS の共通設定を chezmoi で再現する。個人・業務
 | Zed・Starship | `~/.config/zed/`、`~/.config/starship.toml` |
 | Cursor | `~/Library/Application Support/Cursor/User/settings.json` |
 | zsh | `~/.zshenv`、`~/.zprofile`、`~/.zshrc` |
+| mise | `~/.config/mise/config.toml` |
+| uv | `~/.config/uv/uv.toml` |
 | direnv ラッパー | `~/.local/bin/with-direnv` |
 
 Git identity は machine-config の `~/.config/git/config.local`。個人シェル設定は `~/.config/zsh/local.zshenv` と `local.zsh`。SSH 設定・共通 AI 指示も machine-config が管理する。秘密鍵・Keychain・AWS/GCP/GitHub の認証はコピーしない。GitHub の Git 操作は SSH、API 操作は gh を使う。
@@ -45,6 +47,8 @@ chezmoi apply
 ```
 
 通常は変更した対象パスだけ diff・apply する。chezmoi apply でパッケージは導入されない。installer は既存 native GUI を保持し、明示 upgrade と自動 cleanup を抑える。不足依存の導入に伴う依存更新は Homebrew が行う。
+
+Node.js は mise、Python は uv で管理する。mise のグローバルは Node 24 で、`.node-version` と `.nvmrc` も読む。uv は管理 Python だけを使い（`python-preference = "only-managed"`）、グローバルの `pip install` は `PIP_REQUIRE_VIRTUALENV=1` で拒否する。個人・業務のツールは `~/.config/mise/conf.d/` に非公開で置く。
 
 プロジェクトのツール版は各 repo の mise.toml が優先。`.zshenv` で shims を選択し、対話シェルは mise activate と direnv hook を使う。`.envrc` の実行許可は内容確認後に各 repo で `direnv allow`。移動すると許可を取り直す場合がある。
 

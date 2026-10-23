@@ -1,0 +1,7 @@
+# プロジェクト指定の版は各 repo の mise.toml が優先する。個人・業務のツールは非公開設定（conf.d）に置く。
+[settings]
+# .node-version / .nvmrc を読む（mise は既定では読まない）
+idiomatic_version_file_enable_tools = ["node"]
+
+[tools]
+node = "24"

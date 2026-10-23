@@ -1,3 +1,6 @@
+# グローバルの pip install を禁止する。Python のパッケージは uv で管理する。
+export PIP_REQUIRE_VIRTUALENV=1
+
 # 補完は Homebrew の completion directory を含めて初期化する。
 typeset -U path PATH fpath
 if [[ -d /opt/homebrew/share/zsh/site-functions ]]; then

@@ -1,0 +1,2 @@
+# uv が管理する Python だけを使う（Homebrew・python.org の Python を拾わない）
+python-preference = "only-managed"

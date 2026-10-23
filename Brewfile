@@ -1,6 +1,6 @@
 # 設定の反映とパッケージ導入は分ける。導入は scripts/install-packages。
 # プロジェクト指定のバージョンは各リポジトリの mise.toml で管理する。
-tap "oven-sh/bun"
+# Node.js・Terraform は mise、Python は uv で導入する（`uv python install --default`）。
 
 # 基盤 CLI
 brew "chezmoi"
@@ -16,12 +16,9 @@ brew "awscli"
 cask "gcloud-cli"
 cask "codex"
 
-# プロジェクトに指定がない場合のランタイム・パッケージ管理
+# ランタイム（Node.js・Terraform は mise、Python は uv が管理する）
 brew "go"
-brew "node"
-brew "python" # source validation uses Python 3.11+ / tomllib
-brew "pnpm"
-brew "oven-sh/bun/bun"
+brew "bun"
 
 # 既存のアプリを上書きしない導入は scripts/install-packages を使う。
 cask "ghostty"
@@ -35,8 +32,6 @@ go "github.com/go-delve/delve/cmd/dlv"
 go "golang.org/x/tools/cmd/goimports"
 go "golang.org/x/tools/gopls"
 go "github.com/josharian/impl"
-
-npm "@github/copilot"
 
 # Cursor 拡張は scripts/cursor-extensions.txt と install-cursor-extensions で管理。
 # brew の vscode DSL は code を優先するため使用しない。
