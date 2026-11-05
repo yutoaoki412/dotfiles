@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
+from tempfile import TemporaryDirectory
 import json, subprocess, tomllib
 def jsonc(text):
     # Remove JSONC comments and trailing commas only outside string literals.
@@ -32,7 +33,14 @@ for path in (root/'home').rglob('*.json'):
 for path in (root/'home').rglob('*.toml'):
     tomllib.loads(path.read_text())
 ghostty=Path('/Applications/Ghostty.app/Contents/MacOS/ghostty')
+ghostty_config=subprocess.check_output([
+    'chezmoi','--source='+str(root),'execute-template','--file',
+    str(root/'home/dot_config/ghostty/config.ghostty.tmpl'),
+],text=True)
 if ghostty.exists():
-    subprocess.run([str(ghostty),'+validate-config','--config-file='+str(root/'home/dot_config/ghostty/config.ghostty')],check=True)
+    with TemporaryDirectory(prefix='dotfiles-check-') as tmpdir:
+        rendered=Path(tmpdir)/'config.ghostty'
+        rendered.write_text(ghostty_config)
+        subprocess.run([str(ghostty),'+validate-config','--config-file='+str(rendered)],check=True)
 assert (root/'.chezmoiroot').read_text().strip()=='home'
 print('Public source checks passed.')

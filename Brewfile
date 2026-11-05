@@ -26,6 +26,7 @@ cask "zed"
 cask "cursor"
 cask "raycast"
 cask "font-jetbrains-mono-nerd-font"
+cask "font-udev-gothic"
 
 # 実機で使用中の Go ツール。既存ツールを更新せず、不足分だけを導入する。
 go "github.com/go-delve/delve/cmd/dlv"
