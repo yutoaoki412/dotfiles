@@ -58,7 +58,9 @@ GCP の既定プロジェクトは、各 repo のローカル `.envrc` に `expo
 
 Ghostty のフォントは UDEV Gothic 35。英数字を横方向に縮めない35版を使い、JetBrains Mono 系の英数字と BIZ UDゴシックの日本語を同じフォントで表示する。Nerd Fonts のアイコンは Ghostty 内蔵フォントで補う。
 
-Ghostty の設定再読込は Ctrl+Shift+R。Quick Terminal の位置変更は完全再起動が必要で、グローバル Ctrl+M は macOS のアクセシビリティ許可に依存する。開始先は `~/Developer/github`、既存ウィンドウ・タブ・split では作業ディレクトリを引き継ぐ。
+Ghostty の設定再読込は Ctrl+Shift+R。Quick Terminal の位置変更は完全再起動が必要で、グローバル Ctrl+M は macOS のアクセシビリティ許可に依存する。
+
+新規ウィンドウの開始先は dotfiles リポジトリの親ディレクトリ。会社PCで `~/Developer/github/dotfiles` に置けば `~/Developer/github`、私用PCで `~/Developer/dotfiles` に置けば `~/Developer` になる。chezmoi のテンプレートで配置先から生成するため、PCごとの設定は不要。タブ・split は作業中のディレクトリを引き継ぐ。
 
 Zed 拡張は auto_install_extensions、Cursor 拡張は scripts/cursor-extensions.txt を正本にする。Starship の GCP 表示はプロジェクトで CLOUDSDK_ACTIVE_CONFIG_NAME が選ばれたときだけ表示する。
 

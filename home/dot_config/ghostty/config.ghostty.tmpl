@@ -42,9 +42,10 @@ mouse-hide-while-typing = true
 # ──────────────────────────────────────────
 # ウィンドウ・起動設定
 # ──────────────────────────────────────────
-working-directory = ~/Developer/github
+# dotfiles と同じ親フォルダを開始先にする（会社PC・私用PCの配置に追従）。
+working-directory = {{ dir .chezmoi.workingTree | quote }}
 
-# 新規ウィンドウは常にデフォルトディレクトリ（~/Developer）で開く
+# 新規ウィンドウは常に上の開始先で開く
 window-inherit-working-directory = false
 
 # タブ・スプリットを開いたときは作業中のディレクトリを引き継ぐ
