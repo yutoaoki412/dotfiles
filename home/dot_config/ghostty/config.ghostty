@@ -2,7 +2,9 @@
 # 通常の設定は Ctrl+Shift+R で再読み込み。
 # Quick Terminalの位置変更はGhosttyの完全な再起動が必要。
 
-font-family = "JetBrainsMono Nerd Font Mono"
+# 英数字は JetBrains Mono、日本語は BIZ UDゴシックを合成した等幅フォント。
+# 英数字の横幅を縮めない35版を使う。Nerd Fonts のアイコンは Ghostty 内蔵フォントで補う。
+font-family = "UDEV Gothic 35"
 
 # ──────────────────────────────────────────
 # 外観（背景・透明度）
