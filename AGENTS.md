@@ -1,6 +1,6 @@
 # dotfiles の作業規約
 
-公開できる macOS 共通設定を chezmoi で管理する。個人・業務の AI 指示、アカウント、個人用シェル設定は隣接する非公開 machine-config に置く。秘密鍵、トークン、認証ファイル、履歴はどちらにも取り込まない。
+公開できる macOS 共通設定を chezmoi で管理する。個人・業務のシェルやアカウント設定は隣接する非公開 machine-config に、共通 AI 指示は用途別の非公開リポジトリ（`shared-ai-for-work` / `shared-ai-for-private`）に置く。秘密鍵、トークン、認証ファイル、履歴はいずれにも取り込まない。
 
 ## 正本と配置
 

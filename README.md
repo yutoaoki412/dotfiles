@@ -1,6 +1,6 @@
 # macOS dotfiles
 
-Apple Silicon macOS の共通設定を chezmoi で再現する。個人・業務の AI 指示やアカウント設定は非公開の machine-config に分け、認証情報と履歴は実機で管理する。
+Apple Silicon macOS の共通設定を chezmoi で再現する。個人・業務のアカウントやシェル設定は非公開の machine-config に、共通 AI 指示（`~/.shared-ai`）は非公開の `shared-ai-for-work` / `shared-ai-for-private` に分け、認証情報と履歴は実機で管理する。
 
 ```text
 📁 ~/Developer/github/
@@ -9,9 +9,8 @@ Apple Silicon macOS の共通設定を chezmoi で再現する。個人・業務
 │   ├── 📁 home/                # chezmoi の展開対象
 │   ├── 📄 Brewfile
 │   └── 📁 scripts/             # 検査と明示インストール
-├── 📁 machine-config/           # 非公開: 個人設定と共通 AI 指示
-├── 📁 i3-data-infra/
-├── 📁 i3-data-model/
+├── 📁 machine-config/           # 非公開: マシン固有の個人・業務設定
+├── 📁 shared-ai-for-work/       # 非公開: 業務PC用 ~/.shared-ai
 └── 📁 その他のリポジトリ/
 ```
 
@@ -28,7 +27,7 @@ Apple Silicon macOS の共通設定を chezmoi で再現する。個人・業務
 | uv | `~/.config/uv/uv.toml` |
 | direnv ラッパー | `~/.local/bin/with-direnv` |
 
-Git identity は machine-config の `~/.config/git/config.local`。個人シェル設定は `~/.config/zsh/local.zshenv` と `local.zsh`。SSH 設定・共通 AI 指示も machine-config が管理する。秘密鍵・Keychain・AWS/GCP/GitHub の認証はコピーしない。GitHub の Git 操作は SSH、API 操作は gh を使う。
+Git identity は machine-config の `~/.config/git/config.local`。個人シェル設定は `~/.config/zsh/local.zshenv` と `local.zsh`。SSH 設定も machine-config が管理する。共通 AI 指示（`~/.shared-ai`）は業務PCでは `shared-ai-for-work`、私用PCでは `shared-ai-for-private` で管理する。秘密鍵・Keychain・AWS/GCP/GitHub の認証はコピーしない。GitHub の Git 操作は SSH、API 操作は gh を使う。
 
 ## 初回導入と更新
 
