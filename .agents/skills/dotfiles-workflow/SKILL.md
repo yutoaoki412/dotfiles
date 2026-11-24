@@ -5,7 +5,7 @@ description: 公開dotfilesの設定変更、反映、パッケージ管理と�
 
 # dotfiles の変更手順
 
-公開 source は `home/`、非公開の個人・AI設定は隣接する machine-config が正本。対象リポジトリと chezmoi source を確認してから作業する。
+公開設定の source は `home/`。アカウントと個人用シェル設定は machine-config、共通 AI 指示は用途別の shared-ai リポジトリで管理する。対象リポジトリと chezmoi source を確認してから作業する。
 
 ## 設定の更新
 
